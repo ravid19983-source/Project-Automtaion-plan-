@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>index.html</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F6F1;
+    --bg-raised: #FFFFFF;
+    --grid-line: #D9DDD2;
+    --ink: #16201C;
+    --ink-soft: #4B564E;
+    --ink-faint: #86907F;
+    --forest: #2C6B4A;
+    --forest-soft: #E4EEE7;
+    --indigo: #2C4A8C;
+    --indigo-soft: #E7ECF6;
+    --rust: #9C4A2E;
+    --rust-soft: #F3E6E0;
+    --pending: #C79A2E;
+    --pending-soft: #F6EFDD;
+    --shadow: 0 1px 0 rgba(22,32,28,0.06);
+    --radius: 6px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #12140F;
+      --bg-raised: #1A1D16;
+      --grid-line: #2C3026;
+      --ink: #ECEDE6;
+      --ink-soft: #B7BDAE;
+      --ink-faint: #7C8272;
+      --forest: #6FBE93;
+      --forest-soft: #1E2C22;
+      --indigo: #8FB0F0;
+      --indigo-soft: #1D2740;
+      --rust: #E0916E;
+      --rust-soft: #2E211B;
+      --pending: #E8C468;
+      --pending-soft: #332A15;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #12140F;
+    --bg-raised: #1A1D16;
+    --grid-line: #2C3026;
+    --ink: #ECEDE6;
+    --ink-soft: #B7BDAE;
+    --ink-faint: #7C8272;
+    --forest: #6FBE93;
+    --forest-soft: #1E2C22;
+    --indigo: #8FB0F0;
+    --indigo-soft: #1D2740;
+    --rust: #E0916E;
+    --rust-soft: #2E211B;
+    --pending: #E8C468;
+    --pending-soft: #332A15;
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *{ box-sizing: border-box; }
+  html, body{ height: auto; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  a{ color: inherit; }
+
+  code, .mono{ font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  h1,h2,h3{ font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif; margin: 0; letter-spacing: -0.01em; }
+
+  /* ---------- Header ---------- */
+  header{
+    position: sticky; top: 0; top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--grid-line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 28px;
+    max-width: 1080px; margin: 0 auto;
+  }
+  .logo{ display:flex; align-items:center; gap:9px; font-weight:600; font-size:1.05rem; }
+  .logo .dot{
+    width:9px; height:9px; border-radius:2px; background: var(--forest);
+    box-shadow: 3px 0 0 var(--pending), 6px 0 0 var(--indigo);
+    margin-right: 8px;
+  }
+  .navlinks{ display:flex; gap:26px; font-size:0.92rem; color:var(--ink-soft); }
+  .navlinks a{ text-decoration:none; }
+  .navlinks a:hover{ color: var(--ink); }
+  @media (max-width: 640px){ .navlinks{ display:none; } }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding: 76px 0 60px; }
+  .hero-grid{ display:grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items:center; }
+  @media (max-width: 860px){ .hero-grid{ grid-template-columns: 1fr; gap: 40px; } }
+
+  .eyebrow{
+    font-family:"IBM Plex Mono"; font-size:0.8rem; color: var(--forest);
+    margin-bottom: 18px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:"fx"; background:var(--forest-soft); color:var(--forest); padding:2px 6px; border-radius:4px; font-size:0.72rem; }
+
+  h1{ font-size: clamp(2.1rem, 4.2vw, 3.3rem); line-height:1.08; font-weight:600; }
+  h1 .cell{ color: var(--forest); }
+  .sub{ margin-top:20px; max-width: 46ch; color: var(--ink-soft); font-size:1.05rem; }
+
+  .cta-row{ display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; }
+  .btn{
+    font-family:"IBM Plex Mono"; font-size:0.88rem; padding: 12px 20px; border-radius: var(--radius);
+    border:1px solid var(--ink); background:var(--ink); color: var(--bg);
+    cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn.ghost{ background:transparent; color:var(--ink); border-color:var(--grid-line); }
+
+  /* ---------- Sheet demo card ---------- */
+  .sheet-card{
+    background: var(--bg-raised);
+    border: 1px solid var(--grid-line);
+    border-radius: 10px;
+    overflow:hidden;
+    box-shadow: 0 20px 40px -28px rgba(22,32,28,0.35);
+  }
+  .sheet-bar{
+    display:flex; align-items:center; gap:8px;
+    padding: 10px 14px; border-bottom:1px solid var(--grid-line);
+    font-family:"IBM Plex Mono"; font-size:0.76rem; color:var(--ink-faint);
+  }
+  .sheet-bar .fname{ color:var(--ink-soft); }
+  table.sheet{ width:100%; border-collapse:collapse; font-size:0.86rem; }
+  table.sheet th{
+    text-align:left; font-family:"IBM Plex Mono"; font-weight:500; font-size:0.72rem;
+    color: var(--ink-faint); padding: 9px 14px; border-bottom:1px solid var(--grid-line);
+    background: color-mix(in srgb, var(--bg) 60%, var(--bg-raised));
+  }
+  table.sheet td{
+    padding: 11px 14px; border-bottom:1px solid var(--grid-line);
+    color: var(--ink-soft);
+  }
+  table.sheet tr:last-child td{ border-bottom:none; }
+  .status{
+    display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono"; font-size:0.72rem;
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .status.pending{ background: var(--pending-soft); color: var(--pending); }
+  .status.sent{ background: var(--forest-soft); color: var(--forest); }
+  .status .knob{ width:5px; height:5px; border-radius:50%; background: currentColor; }
+  .row-active td{ background: color-mix(in srgb, var(--forest-soft) 55%, transparent); }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 64px 0; border-top: 1px solid var(--grid-line); }
+  .section-head{ max-width: 56ch; margin-bottom: 42px; }
+  .kicker{ font-family:"IBM Plex Mono"; font-size:0.78rem; color: var(--ink-faint); margin-bottom:10px; }
+  .section-head h2{ font-size: clamp(1.5rem, 2.6vw, 2.05rem); font-weight:600; }
+  .section-head p{ color: var(--ink-soft); margin-top:12px; }
+
+  /* ---------- Pipeline ---------- */
+  .pipeline{ display:grid; grid-template-columns: repeat(4, 1fr); gap:0; position:relative; }
+  @media (max-width: 800px){ .pipeline{ grid-template-columns: 1fr; } }
+  .stage{
+    border: 1px solid var(--grid-line); border-left: none; padding: 24px 22px;
+    position:relative; background: var(--bg-raised);
+  }
+  .pipeline .stage:first-child{ border-left: 1px solid var(--grid-line); border-radius: 8px 0 0 8px; }
+  .pipeline .stage:last-child{ border-radius: 0 8px 8px 0; }
+  @media (max-width: 800px){
+    .stage{ border-left: 1px solid var(--grid-line); border-top:none; border-radius:0 !important; }
+    .pipeline .stage:first-child{ border-top: 1px solid var(--grid-line); border-radius: 8px 8px 0 0 !important; }
+    .pipeline .stage:last-child{ border-radius: 0 0 8px 8px !important; }
+  }
+  .stage .tag{ font-family:"IBM Plex Mono"; font-size:0.72rem; color: var(--indigo); background:var(--indigo-soft); padding:3px 8px; border-radius:5px; display:inline-block; margin-bottom:14px; }
+  .stage h3{ font-size:1.02rem; font-weight:600; margin-bottom:8px; }
+  .stage p{ font-size:0.87rem; color:var(--ink-soft); margin:0; }
+
+  /* ---------- Variable resolver demo ---------- */
+  .resolver{ display:grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  @media (max-width: 800px){ .resolver{ grid-template-columns: 1fr; } }
+  .panel{ background: var(--bg-raised); border:1px solid var(--grid-line); border-radius: 8px; padding: 22px; }
+  .panel h4{ font-family:"IBM Plex Mono"; font-size:0.76rem; color:var(--ink-faint); margin:0 0 16px; font-weight:500; }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-family:"IBM Plex Mono"; font-size:0.74rem; color: var(--ink-faint); margin-bottom:6px; }
+  .field input{
+    width:100%; padding: 9px 11px; border-radius:5px; border:1px solid var(--grid-line);
+    background: var(--bg); color: var(--ink); font-family:"IBM Plex Sans"; font-size:0.9rem;
+  }
+  .field input:focus{ outline: 2px solid var(--forest); outline-offset: 1px; }
+  .template-out{
+    font-family:"IBM Plex Mono"; font-size:0.92rem; white-space:pre-wrap; line-height:1.7;
+    color: var(--ink); background: var(--forest-soft); border-radius:6px; padding:16px; min-height: 130px;
+  }
+  .template-out .var{ color: var(--forest); font-weight:600; }
+
+  /* ---------- Action grid ---------- */
+  .actions{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
+  @media (max-width: 760px){ .actions{ grid-template-columns: repeat(2, 1fr); } }
+  .action-cell{
+    border:1px solid var(--grid-line); border-radius: 7px; padding:16px 14px; background: var(--bg-raised);
+  }
+  .action-cell .k{ font-family:"IBM Plex Mono"; font-size:0.7rem; color: var(--ink-faint); display:block; margin-bottom:8px; }
+  .action-cell .v{ font-weight:500; font-size:0.94rem; }
+
+  /* ---------- Triggers ---------- */
+  .triggers{ display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
+  @media (max-width: 760px){ .triggers{ grid-template-columns: 1fr 1fr; } }
+  .trigger-card{ border:1px solid var(--grid-line); border-radius:8px; padding:18px; background:var(--bg-raised); }
+  .trigger-card h4{ font-size:0.96rem; margin:0 0 6px; font-weight:600; }
+  .trigger-card p{ margin:0; font-size:0.84rem; color:var(--ink-soft); }
+  .trigger-card code{ font-size:0.78rem; color: var(--indigo); }
+
+  /* ---------- Retry timeline ---------- */
+  .retry-row{ display:flex; align-items:center; gap:0; flex-wrap:wrap; font-family:"IBM Plex Mono"; font-size:0.82rem; }
+  .retry-step{ display:flex; align-items:center; gap:10px; padding: 8px 14px; border:1px solid var(--grid-line); border-radius:6px; background:var(--bg-raised); }
+  .retry-arrow{ color: var(--ink-faint); padding: 0 10px; }
+  .retry-step.fail{ color: var(--rust); }
+  .retry-step.wait{ color: var(--pending); }
+  .retry-step.final{ color: var(--ink); border-color: var(--ink-soft); }
+
+  /* ---------- Architecture ---------- */
+  .arch-svg{ width:100%; height:auto; display:block; }
+
+  footer{ padding: 40px 0 64px; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; font-size:0.85rem; color: var(--ink-faint); }
+  .foot-note{ font-family:"IBM Plex Mono"; font-size:0.76rem; color: var(--ink-faint); }
+
+  ::selection{ background: var(--forest-soft); color: var(--forest); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo"><span class="dot"></span>SheetFlow</div>
+    <nav class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#actions">Actions</a>
+      <a href="#reliability">Reliability</a>
+      <a href="#architecture">Architecture</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none; padding-top:64px;">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">CONCEPT PREVIEW · SHEET-CENTRIC AUTOMATION</div>
+        <h1>Your spreadsheet<br>already knows<br>what to <span class="cell">automate.</span></h1>
+        <p class="sub">Point SheetFlow at a Google Sheet. Every column becomes a variable, every row becomes a job, and every status cell tells you what happened — no code, no Zapier subscription per step.</p>
+        <div class="cta-row">
+          <a class="btn" href="#how">See how a row runs →</a>
+          <a class="btn ghost" href="#architecture">View architecture</a>
+        </div>
+      </div>
+
+      <div class="sheet-card">
+        <div class="sheet-bar">
+          <span class="mono">📄</span>
+          <span class="fname">Customer_Messages</span>
+          <span style="margin-left:auto;">every 1 min</span>
+        </div>
+        <table class="sheet" id="heroSheet">
+          <thead>
+            <tr><th>Name</th><th>Message</th><th>Send_Time</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr id="row-ravi">
+              <td>Ravi</td><td>Hi Ravi</td><td class="mono">10:00</td>
+              <td><span class="status pending" id="status-ravi"><span class="knob"></span>Pending</span></td>
+            </tr>
+            <tr>
+              <td>Arun</td><td>Hello Arun</td><td class="mono">10:30</td>
+              <td><span class="status pending"><span class="knob"></span>Pending</span></td>
+            </tr>
+            <tr>
+              <td>Kumar</td><td>Welcome</td><td class="mono">11:00</td>
+              <td><span class="status pending"><span class="knob"></span>Pending</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="section-head">
+      <div class="kicker">HOW A ROW BECOMES AN ACTION</div>
+      <h2>Four stages, no glue code.</h2>
+      <p>Connect once, and SheetFlow reads your sheet's own headings as the schema — nothing to configure twice.</p>
+    </div>
+    <div class="pipeline">
+      <div class="stage">
+        <span class="tag">01 connect</span>
+        <h3>Link the sheet</h3>
+        <p>Sign in with Google, pick a spreadsheet and a tab. Tokens are encrypted at rest — SheetFlow never sees your password.</p>
+      </div>
+      <div class="stage">
+        <span class="tag">02 map</span>
+        <h3>Columns become variables</h3>
+        <p>Headings like <code>Name</code> or <code>Amount</code> turn into <code class="mono">{{Name}}</code> automatically — usable in any message or request.</p>
+      </div>
+      <div class="stage">
+        <span class="tag">03 configure</span>
+        <h3>Set the trigger and action</h3>
+        <p>Pick a schedule or a row condition, then choose what happens: a WhatsApp message, a webhook, an HTTP call.</p>
+      </div>
+      <div class="stage">
+        <span class="tag">04 run</span>
+        <h3>Sheet updates itself</h3>
+        <p>The worker executes the row's job and writes the result — <code>Sent</code>, <code>Failed</code>, timestamp — right back into the sheet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VARIABLE RESOLVER -->
+  <section>
+    <div class="section-head">
+      <div class="kicker">THE VARIABLE ENGINE</div>
+      <h2>Try it — edit a row, watch the message change.</h2>
+      <p>This is the same resolver that turns sheet columns into message text at send time. Type into the fields.</p>
+    </div>
+    <div class="resolver">
+      <div class="panel">
+        <h4>ROW VALUES</h4>
+        <div class="field"><label>Name</label><input id="in-name" value="Ravi"></div>
+        <div class="field"><label>Product</label><input id="in-product" value="Laptop"></div>
+        <div class="field"><label>Amount</label><input id="in-amount" value="45000"></div>
+        <div class="field"><label>Date</label><input id="in-date" value="30-09-2026"></div>
+      </div>
+      <div class="panel">
+        <h4>MESSAGE TEMPLATE OUTPUT</h4>
+        <div class="template-out" id="template-out"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIONS -->
+  <section id="actions">
+    <div class="section-head">
+      <div class="kicker">ACTION ENGINE</div>
+      <h2>One row, any downstream action.</h2>
+      <p>Actions plug into the same engine — new ones ship without touching how sheets or variables work.</p>
+    </div>
+    <div class="actions">
+      <div class="action-cell"><span class="k">A1</span><span class="v">WhatsApp message</span></div>
+      <div class="action-cell"><span class="k">A2</span><span class="v">HTTP / cURL request</span></div>
+      <div class="action-cell"><span class="k">A3</span><span class="v">Webhook call</span></div>
+      <div class="action-cell"><span class="k">A4</span><span class="v">Update the sheet</span></div>
+      <div class="action-cell"><span class="k">A5</span><span class="v">Send email</span></div>
+      <div class="action-cell"><span class="k">A6</span><span class="v">Delay / wait step</span></div>
+      <div class="action-cell"><span class="k">A7</span><span class="v">Condition branch</span></div>
+      <div class="action-cell"><span class="k">A8</span><span class="v">Telegram · Slack (soon)</span></div>
+    </div>
+  </section>
+
+  <!-- TRIGGERS -->
+  <section>
+    <div class="section-head">
+      <div class="kicker">TRIGGERS</div>
+      <h2>Not just "every 5 minutes."</h2>
+    </div>
+    <div class="triggers">
+      <div class="trigger-card">
+        <h4>Schedule</h4>
+        <p>Every minute, hourly, daily, or a specific <code>Send_Time</code> column.</p>
+      </div>
+      <div class="trigger-card">
+        <h4>Sheet change</h4>
+        <p>New row added, a status cell edited, or a column value changed.</p>
+      </div>
+      <div class="trigger-card">
+        <h4>Incoming API</h4>
+        <p><code>POST /automation/trigger</code> from any system you already run.</p>
+      </div>
+      <div class="trigger-card">
+        <h4>Webhook</h4>
+        <p>Stripe, a CRM, or your own backend pushing events in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELIABILITY -->
+  <section id="reliability">
+    <div class="section-head">
+      <div class="kicker">WHEN A SEND FAILS</div>
+      <h2>Retries are visible, not silent.</h2>
+      <p>Every attempt, wait, and final state is written back to the row — nothing disappears into a log you'll never open.</p>
+    </div>
+    <div class="retry-row">
+      <div class="retry-step fail">Attempt 1 — failed</div>
+      <div class="retry-arrow">→</div>
+      <div class="retry-step wait">wait 30s</div>
+      <div class="retry-arrow">→</div>
+      <div class="retry-step fail">Attempt 2 — failed</div>
+      <div class="retry-arrow">→</div>
+      <div class="retry-step wait">wait 2m</div>
+      <div class="retry-arrow">→</div>
+      <div class="retry-step fail">Attempt 3 — failed</div>
+      <div class="retry-arrow">→</div>
+      <div class="retry-step final">marked Failed</div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture">
+    <div class="section-head">
+      <div class="kicker">SYSTEM ARCHITECTURE</div>
+      <h2>Sheet-in, action-out — with a queue in between.</h2>
+      <p>A scheduler never runs the job itself; it hands rows to a queue so retries, concurrency, and failures stay contained.</p>
+    </div>
+    <svg class="arch-svg" viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture diagram: dashboard to automation API to Google Sheets, scheduler and action engine, which drives WhatsApp, HTTP and webhook actions.">
+      <style>
+        .n{ fill: var(--bg-raised); stroke: var(--grid-line); }
+        .t{ font-family:"IBM Plex Mono"; font-size:13px; fill: var(--ink); }
+        .l{ stroke: var(--ink-faint); stroke-width:1.2; fill:none; }
+        .tag{ font-family:"IBM Plex Mono"; font-size:10px; fill: var(--ink-faint); }
+      </style>
+
+      <rect class="n" x="370" y="10" width="180" height="46" rx="7"/>
+      <text class="t" x="460" y="38" text-anchor="middle">Dashboard</text>
+
+      <line class="l" x1="460" y1="56" x2="460" y2="90"/>
+
+      <rect class="n" x="360" y="90" width="200" height="46" rx="7"/>
+      <text class="t" x="460" y="118" text-anchor="middle">Automation API</text>
+
+      <line class="l" x1="460" y1="136" x2="180" y2="180"/>
+      <line class="l" x1="460" y1="136" x2="460" y2="180"/>
+      <line class="l" x1="460" y1="136" x2="740" y2="180"/>
+
+      <rect class="n" x="80" y="180" width="200" height="46" rx="7"/>
+      <text class="t" x="180" y="208" text-anchor="middle">Google Sheets API</text>
+
+      <rect class="n" x="360" y="180" width="200" height="46" rx="7"/>
+      <text class="t" x="460" y="208" text-anchor="middle">Scheduler / Queue</text>
+
+      <rect class="n" x="640" y="180" width="200" height="46" rx="7"/>
+      <text class="t" x="740" y="208" text-anchor="middle">Action Engine</text>
+
+      <line class="l" x1="180" y1="226" x2="180" y2="300"/>
+      <rect class="n" x="80" y="300" width="200" height="46" rx="7"/>
+      <text class="t" x="180" y="328" text-anchor="middle">Variable Resolver</text>
+
+      <line class="l" x1="460" y1="226" x2="460" y2="260"/>
+      <text class="tag" x="470" y="252">Redis / BullMQ</text>
+
+      <line class="l" x1="740" y1="226" x2="620" y2="300"/>
+      <line class="l" x1="740" y1="226" x2="740" y2="300"/>
+      <line class="l" x1="740" y1="226" x2="860" y2="300"/>
+
+      <rect class="n" x="530" y="300" width="150" height="46" rx="7"/>
+      <text class="t" x="605" y="328" text-anchor="middle">WhatsApp</text>
+
+      <rect class="n" x="665" y="300" width="150" height="46" rx="7"/>
+      <text class="t" x="740" y="328" text-anchor="middle">HTTP / cURL</text>
+
+      <rect class="n" x="800" y="300" width="110" height="46" rx="7"/>
+      <text class="t" x="855" y="328" text-anchor="middle">Webhook</text>
+    </svg>
+  </section>
+
+  <footer>
+    <div class="foot-row">
+      <div class="mono foot-note">SheetFlow — a sheet-centric automation engine, in design.</div>
+      <div>Built with Google Sheets API · Node.js · Redis/BullMQ · Baileys</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  // Hero row: Pending -> Sent, looping, one calm orchestrated moment
+  var statusEl = document.getElementById('status-ravi');
+  var rowEl = document.getElementById('row-ravi');
+  var sent = false;
+  function toggle(){
+    sent = !sent;
+    if(sent){
+      statusEl.className = 'status sent';
+      statusEl.innerHTML = '<span class="knob"></span>Sent';
+      rowEl.classList.add('row-active');
+    } else {
+      statusEl.className = 'status pending';
+      statusEl.innerHTML = '<span class="knob"></span>Pending';
+      rowEl.classList.remove('row-active');
+    }
+  }
+  setInterval(toggle, 3200);
+
+  // Variable resolver demo
+  var name = document.getElementById('in-name');
+  var product = document.getElementById('in-product');
+  var amount = document.getElementById('in-amount');
+  var date = document.getElementById('in-date');
+  var out = document.getElementById('template-out');
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function render(){
+    var n = esc(name.value || '{{Name}}');
+    var p = esc(product.value || '{{Product}}');
+    var a = esc(amount.value || '{{Amount}}');
+    var d = esc(date.value || '{{Date}}');
+    out.innerHTML =
+      'Hi <span class="var">' + n + '</span>,\n\n' +
+      'your order for <span class="var">' + p + '</span>\n' +
+      'amount \u20B9<span class="var">' + a + '</span>\n' +
+      'is scheduled for <span class="var">' + d + '</span>.\n\n' +
+      'Thank you!';
+  }
+  [name, product, amount, date].forEach(function(el){
+    el.addEventListener('input', render);
+  });
+  render();
+})();
+</script>
+
+</body>
+</html>
